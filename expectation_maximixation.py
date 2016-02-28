@@ -64,8 +64,8 @@ def validate_coin_prob_input(prompt):
 
 def expectation_maximization(tosses):
 	# get random value for p1 and p2
-	p1 = np.random.random()
-	p2 = np.random.random()
+	p1 = np.random.uniform(0, 1)
+	p2 = np.random.uniform(0, 1)
 
 	num_iterations = 1
 	while True:
