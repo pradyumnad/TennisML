@@ -14,20 +14,24 @@ input = list(train[['1st serve points won Norm', '2nd serve points won Norm', 'B
 target = list(train_target)
 target = [[i] for i in target]
 
-# print input
-# print target
+print input
+print target
 
-# Create net with 3 inputs and 1 neuron
-net = nl.net.newp([[0, 1], [0, 1], [0, 1]], 1)
-error = net.train(input, target, epochs=140, show=10, lr=0.1)
+# Create network with 3 layers and random initialized
+net = nl.net.newff([[0, 1], [0, 1], [0, 1]], [3, 1])
+net.trainf = nl.net.train.train_gd
 
-# Plot results
+print(net.ci, net.co)
+
+# Train network
+error = net.train(input, target, epochs=500, show=50, goal=0.02)
+
+# Plot result
 import pylab as pl
 
 pl.plot(error)
 pl.xlabel('Epoch number')
-pl.ylabel('Train error')
-pl.grid()
+pl.ylabel('error (default SSE)')
 pl.show()
 
 

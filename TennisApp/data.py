@@ -3,6 +3,7 @@ import urllib
 import csv
 
 from bs4 import BeautifulSoup
+import pandas
 
 __author__ = 'pradyumnad'
 
@@ -152,6 +153,24 @@ def us_open():
         writer.writerow(player1)
         writer.writerow(player2)
 
+def prepare_data():
+    global train, train_target, test, test_target
+    df1 = pandas.read_csv("data/us_open_final.csv")
+    df2 = pandas.read_csv("data/au_open_final.csv")
+    frames = [
+        df1[['1st serve points won Norm', '2nd serve points won Norm', 'Break points won Norm', 'Won']],
+        df2[['1st serve points won Norm', '2nd serve points won Norm', 'Break points won Norm', 'Won']]
+    ]
+    df = pandas.concat(frames)
+    N = len(df[1:])
+    # tennis_data = df[['1st serve points won Norm', '2nd serve points won Norm', 'Break points won Norm', 'Won']]
+    print("Total Data : ", N)
+    split = int(N * 0.6)
+    train = df.sample(n=split)
+    train_target = train['Won']
+    test = df.drop(train.index)
+    test_target = test['Won']
+    return train, train_target, test, test_target
 
 if __name__ == '__main__':
     # extract_match_details('http://www.ausopen.com/en_AU/scores/stats/day19/1701ms.html')
